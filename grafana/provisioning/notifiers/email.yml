@@ -1,0 +1,11 @@
+apiVersion: 1
+
+notifiers:
+  - name: Email Alerts
+    type: email
+    uid: email_alerts
+    org_id: 1
+    is_default: true
+    settings:
+      addresses: team@urbanherb.com
+      singleEmail: false 

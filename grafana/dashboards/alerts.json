@@ -1,0 +1,40 @@
+{
+  "title": "UrbanHerb Alerts Dashboard",
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "API Response Time",
+      "type": "timeseries",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(urban_herb_api_request_duration_seconds_sum[5m]) / rate(urban_herb_api_request_duration_seconds_count[5m]) * 1000",
+          "legendFormat": "Response Time (ms)"
+        }
+      ],
+      "alert": {
+        "name": "High API Response Time",
+        "conditions": [
+          {
+            "type": "query",
+            "query": { "params": [ "A", "5m", "now" ] },
+            "reducer": { "type": "avg", "params": [] },
+            "evaluator": { "type": "gt", "params": [ 1000 ] }
+          }
+        ],
+        "notifications": [
+          {
+            "uid": "urbanherb_slack"
+          }
+        ]
+      }
+    }
+  ]
+} 

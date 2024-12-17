@@ -1,0 +1,62 @@
+apiVersion: 1
+
+groups:
+  - name: API Alerts
+    folder: API Monitoring
+    interval: 1m
+    rules:
+      - uid: high_api_response_time
+        title: High API Response Time
+        condition: C
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            queryType: range
+            relativeTimeRange:
+              from: 3600
+              to: 0
+            model:
+              expr: rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m]) > 1
+              instant: false
+              range: true
+              refId: A
+          - refId: B
+            datasourceUid: prometheus
+            queryType: range
+            relativeTimeRange:
+              from: 3600
+              to: 0
+            model:
+              expr: rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m])
+              instant: false
+              range: true
+              refId: B
+          - refId: C
+            relativeTimeRange:
+              from: 3600
+              to: 0
+            model:
+              type: threshold
+              datasource:
+                type: __expr__
+                uid: __expr__
+              conditions:
+                - evaluator:
+                    params:
+                      - 1
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    type: avg
+                  type: query
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          summary: High API response time detected
+        labels:
+          severity: warning
