@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     View,
     StyleSheet,
@@ -6,6 +6,7 @@ import {
     StyleProp,
     TouchableOpacity,
 } from 'react-native';
+import { ThemeContext } from '../../../App';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 
@@ -24,6 +25,7 @@ export const Card: React.FC<CardProps> = ({
     variant = 'elevated',
     disabled = false,
 }) => {
+    const theme = useContext(ThemeContext);
     const Wrapper = onPress ? TouchableOpacity : View;
 
     return (

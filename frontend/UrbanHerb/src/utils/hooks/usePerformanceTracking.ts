@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { PerformanceMonitor } from '../utils/monitoring';
+import { PerformanceMonitor } from '../monitoring';
 
 export const usePerformanceTracking = (componentName: string) => {
   const renderCount = useRef(0);

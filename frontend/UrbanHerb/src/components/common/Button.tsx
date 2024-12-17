@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     TouchableOpacity,
     Text,
@@ -8,6 +8,7 @@ import {
     TextStyle,
     StyleProp,
 } from 'react-native';
+import { ThemeContext } from '../../../App';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
@@ -35,6 +36,8 @@ export const Button: React.FC<ButtonProps> = ({
     textStyle,
     fullWidth = false,
 }) => {
+    const theme = useContext(ThemeContext);
+
     const getButtonStyle = () => {
         const baseStyle: ViewStyle = {
             ...styles.button,
@@ -72,7 +75,7 @@ export const Button: React.FC<ButtonProps> = ({
         >
             {loading ? (
                 <ActivityIndicator
-                    color={variant === 'primary' ? colors.text.light : colors.primary.main}
+                    color={variant === 'primary' ? theme.colors.text.light : theme.colors.primary.main}
                     size={size === 'small' ? 'small' : 'small'}
                 />
             ) : (
@@ -88,8 +91,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
-    // Variants
     primaryButton: {
         backgroundColor: colors.primary.main,
     },
@@ -104,8 +105,6 @@ const styles = StyleSheet.create({
     textButton: {
         backgroundColor: 'transparent',
     },
-
-    // Sizes
     smallButton: {
         height: 32,
         paddingHorizontal: spacing.md,
@@ -118,8 +117,6 @@ const styles = StyleSheet.create({
         height: 56,
         paddingHorizontal: spacing.lg,
     },
-
-    // Text styles
     text: {
         ...typography.variants.button,
         textAlign: 'center',
@@ -136,8 +133,6 @@ const styles = StyleSheet.create({
     textText: {
         color: colors.primary.main,
     },
-
-    // Text sizes
     smallText: {
         fontSize: typography.sizes.sm,
     },
@@ -147,17 +142,13 @@ const styles = StyleSheet.create({
     largeText: {
         fontSize: typography.sizes.lg,
     },
-
-    // Disabled state
     disabledButton: {
-        backgroundColor: colors.action.disabled,
-        borderColor: colors.action.disabled,
+        backgroundColor: colors.background.secondary,
+        borderColor: colors.border.light,
     },
     disabledText: {
-        color: colors.text.disabled,
+        color: colors.text.secondary,
     },
-
-    // Full width
     fullWidth: {
         width: '100%',
     },

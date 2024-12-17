@@ -1,4 +1,8 @@
 {
-  "name": "TempProject",
-  "displayName": "TempProject"
+  "name": "UrbanHerb",
+  "displayName": "Urban Herb",
+  "ios": {
+    "bundleIdentifier": "com.urbanherbapp",
+    "buildNumber": "1"
+  }
 }
