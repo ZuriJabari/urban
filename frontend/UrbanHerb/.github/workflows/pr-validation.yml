@@ -1,0 +1,47 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend/UrbanHerb
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'yarn'
+        cache-dependency-path: frontend/UrbanHerb/yarn.lock
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Validate commit messages
+      uses: wagoid/commitlint-github-action@v5
+
+    - name: Check code formatting
+      run: yarn prettier --check .
+
+    - name: Run ESLint
+      run: yarn lint
+
+    - name: Type check
+      run: yarn tsc --noEmit
+
+    - name: Run tests
+      run: yarn test --coverage --passWithNoTests
+
+    - name: Check for merge conflicts
+      run: |
+        if grep -r "^<<<<<<< HEAD" .; then
+          echo "Found merge conflicts"
+          exit 1
+        fi 
