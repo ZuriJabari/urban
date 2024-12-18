@@ -6,8 +6,13 @@ on:
   pull_request:
     branches: [ develop, main ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-and-test:
+    name: Lint and Test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -44,6 +49,8 @@ jobs:
         directory: ./coverage
 
   build-ios:
+    name: Build iOS
+    needs: lint-and-test
     runs-on: macos-latest
     defaults:
       run:
@@ -83,6 +90,8 @@ jobs:
           clean build | xcpretty
 
   build-android:
+    name: Build Android
+    needs: lint-and-test
     runs-on: ubuntu-latest
     defaults:
       run:
